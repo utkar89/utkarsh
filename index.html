@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Website</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      color: black;
+      transition: background-color 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: #f1f1f1;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header .logo img {
+      width: 70px;
+    }
+
+    header nav ul {
+      display: flex;
+      gap: 15px;
+      list-style: none;
+      margin-right: 50px;
+    }
+
+    header nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-size: 18px;
+      padding: 8px;
+      transition: color 0.3s;
+    }
+
+    header nav ul li a:hover {
+      color: #3498db;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .auth-buttons button {
+      padding: 10px 20px;
+      background-color: rgb(126, 34, 206);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .auth-buttons button:hover {
+      background-color: #2980b9;
+    }
+
+    #dark-mode-toggle {
+      font-size: 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      margin-right: 40px;
+    }
+
+    .sub-header {
+      background-color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 60px;
+      z-index: 9;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .home-icon {
+      font-size: 30px;
+      color: rgb(126, 34, 206);
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .button-wrapper {
+      display: flex;
+      gap: 10px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .sub-header button {
+      padding: 10px 15px;
+      background-color: rgb(126, 34, 206);
+      color: white;
+      border: 2px solid rgb(126, 34, 206);
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .sub-header button:hover {
+      border: 2px solid white;
+      background-color: white;
+      color: rgb(126, 34, 206);
+    }
+
+    /* Remove media rule hiding buttons */
+    /* Dark Mode */
+    body.dark-mode {
+      background-color: #121212;
+      color: #00ff00;
+    }
+
+    body.dark-mode header {
+      background-color: #333;
+    }
+
+    body.dark-mode header nav ul li a {
+      color: white;
+    }
+
+    body.dark-mode .sub-header {
+      background-color: #444;
+    }
+
+    body.dark-mode .sub-header button {
+      background-color: #16a085;
+    }
+
+    body.dark-mode .sub-header button:hover {
+      background-color: #1abc9c;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #333;
+    }
+
+    .mobile-menu {
+      display: none;
+      background-color: #f1f1f1;
+      padding: 15px;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .mobile-menu.open {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+      background-color: rgb(229, 201, 255);
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .mobile-menu ul li {
+      margin: 15px 0;
+      padding: 10px;
+      background-color: rgb(137, 50, 213);
+      border-radius: 5px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .mobile-menu ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .mobile-menu ul li a:hover {
+      color: #3498db;
+    }
+
+    .mobile-menu ul li:hover {
+      transform: translateX(10px);
+    }
+
+    .mobile-menu-toggle {
+      display: block;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .mobile-menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 4px;
+      background-color: #333;
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-toggle.open span:nth-child(1) {
+      transform: rotate(45deg);
+      transform-origin: 5px 5px;
+    }
+
+    .mobile-menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-toggle.open span:nth-child(3) {
+      transform: rotate(-45deg);
+      transform-origin: 5px 5px;
+    }
+
+    @media (max-width: 768px) {
+      header nav ul {
+        display: none;
+      }
+
+      .auth-buttons {
+        display: none;
+      }
+
+      .login-button-mobile {
+        display: block;
+        padding: 10px 20px;
+        background-color: rgb(126, 34, 206);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        position: absolute;
+        top: 15px;
+        left: 200px;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-menu-toggle {
+        display: none;
+      }
+
+      .login-button-mobile {
+        display: none;
+      }
+    }
+
+
+
+
+
+
+
+    @keyframes fade {
+      0% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .html-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background-color: #dff1e1;
+      padding: 40px 20px;
+      margin: 20px;
+      border-radius: 10px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .html-left {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .html-left h1 {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #000;
+    }
+
+    .html-left p {
+      font-size: 18px;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .html-btn {
+      display: inline-block;
+      margin: 8px 10px 8px 0;
+      padding: 10px 20px;
+      font-size: 15px;
+      border-radius: 25px;
+      font-weight: bold;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .html-btn.green {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    .html-btn.yellow {
+      background-color: #fdd835;
+      color: black;
+    }
+
+    .html-btn.dark {
+      background-color: #333;
+      color: white;
+    }
+
+    .html-btn.pink {
+      background-color: #ff9aa2;
+      color: black;
+    }
+
+    .html-btn:hover {
+      transform: scale(1.05);
+      transition: 0.3s ease;
+    }
+
+    .html-right {
+      background-color: #f5f5f5;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      min-width: 250px;
+      max-width: 480px;
+    }
+
+    .html-right h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .code-box {
+      background-color: white;
+      border-left: 5px solid #04AA6D;
+      font-family: monospace;
+      padding: 15px;
+      font-size: 15px;
+      line-height: 1.6;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      overflow-x: auto;
+      color: #222;
+    }
+
+    .try-btn {
+      background-color: #04AA6D;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .try-btn:hover {
+      background-color: #038e5f;
+    }
+
+    /* ✅ Mobile Responsive Fix */
+    /* ✅ Mobile Responsive Fix + Hide Right Section */
+    @media (max-width: 768px) {
+      .html-section {
+        flex-direction: column;
+        padding: 20px 15px;
+      }
+
+      .html-left {
+        width: 100%;
+        text-align: center;
+      }
+
+      .html-right {
+        display: none;
+        /* ✅ Ye line right section ko mobile me hide karegi */
+      }
+
+      .html-btn {
+        display: block;
+        margin: 10px auto;
+        width: 80%;
+      }
+
+      .code-box {
+        text-align: left;
+        font-size: 14px;
+      }
+    }
+
+
+
+
+
+    .CSS-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background-color: #fff8b3;
+      padding: 40px 20px;
+      margin: 20px;
+      border-radius: 10px;
+      flex-wrap: wrap;
+      gap: 20px;
+
+    }
+
+    .JavaScript-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      background-color: #F3ECEA;
+      padding: 40px 20px;
+      margin: 20px;
+      border-radius: 10px;
+      flex-wrap: wrap;
+      gap: 20px;
+
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    .aashi-hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .aashi-hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('utkarsh.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: blur(8px);
+      z-index: 1;
+    }
+
+    .aashi-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .aashi-content {
+      color: white;
+      max-width: 900px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .aashi-heading {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .aashi-subheading {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .aashi-typing {
+      color: #00ffd5;
+      font-weight: bold;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .aashi-description {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .aashi-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .aashi-buttons button {
+      padding: 10px 25px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s ease;
+    }
+
+    .aashi-btn-black {
+      background-color: black;
+      color: white;
+    }
+
+    .aashi-btn-white {
+      background-color: white;
+      color: black;
+    }
+
+    .aashi-buttons button:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      .aashi-heading {
+        font-size: 2rem;
+      }
+      .aashi-subheading {
+        font-size: 1.5rem;
+      }
+      .aashi-description {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="logo.png.png" alt="Logo" />
+    </div>
+    <button class="login-button-mobile">Login</button>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Courses</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Notes</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Work with Us</a></li>
+      </ul>
+    </nav>
+    <div class="auth-buttons">
+      <button>Login</button>
+      <button>Sign Up</button>
+    </div>
+    <button id="dark-mode-toggle">&#127770;</button>
+    <button class="mobile-menu-toggle"><span></span><span></span><span></span></button>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Courses</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Notes</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Work with Us</a></li>
+    </ul>
+    <div class="auth-buttons">
+      <button>Login</button>
+      <button>Sign Up</button>
+    </div>
+  </div>
+
+  <!-- Sub-Header -->
+  <div class="sub-header">
+    <i class="home-icon fas fa-home"></i>
+    <div class="button-wrapper">
+      <button onclick="window.open('chal.html', '_blank')">HTML</button>
+
+      <button>CSS</button>
+      <button>JavaScript</button>
+      <button>C</button>
+      <button>C++</button>
+      <button>Java</button>
+      <button>Python</button>
+      <button>PHP</button>
+      <button>React JS</button>
+      <button>Node.js</button>
+      <button>SQL</button>
+      <button>MongoDB</button>
+      <button>Bootstrap</button>
+      <button>TypeScript</button>
+      <button>Express.js</button>
+    </div>
+  </div>
+  <div class="aashi-hero">
+    <div class="aashi-overlay">
+      <div class="aashi-content">
+        <h1 class="aashi-heading">Welcome To Learn With Aashi</h1>
+        <h2 class="aashi-subheading">Learn <span class="aashi-typing" id="changing-text">HTML</span></h2>
+        <p class="aashi-description">
+          Confused about where to begin? Don’t worry! Learn With Aashi helps you explore web development step by step, starting from scratch and moving to advanced concepts.
+        </p>
+        <div class="aashi-buttons">
+          <button class="aashi-btn-black">Explore Courses</button>
+          <button class="aashi-btn-white">Read Articles</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div class="html-section">
+    <div class="html-left">
+      <h1>HTML</h1>
+      <p>The language for building web pages</p>
+      <a href="#" class="html-btn green">Learn HTML</a>
+      <a href="#" class="html-btn yellow">Video Tutorial</a>
+      <a href="#" class="html-btn dark">HTML Reference</a>
+      <a href="#" class="html-btn pink">Get Certified</a>
+    </div>
+    <div class="html-right">
+      <h3>HTML Example:</h3>
+      <div class="code-box">
+        &lt;!DOCTYPE html&gt;<br>
+        &lt;html&gt;<br>
+        &nbsp;&nbsp;&lt;head&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;HTML Tutorial&lt;/title&gt;<br>
+        &nbsp;&nbsp;&lt;/head&gt;<br>
+        &nbsp;&nbsp;&lt;body&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;This is a heading&lt;/h1&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;This is a paragraph.&lt;/p&gt;<br>
+        &nbsp;&nbsp;&lt;/body&gt;<br>
+        &lt;/html&gt;
+      </div>
+      <button class="try-btn">Try it Yourself</button>
+
+    </div>
+  </div>
+  <!-- css ka section he  -->
+  <div class="CSS-section">
+    <div class="html-left">
+      <h1>CSS</h1>
+      <p>The language for styling web pages</p>
+      <a href="#" class="html-btn green">Learn CSS</a>
+      <a href="#" class="html-btn yellow">Video Tutorial</a>
+      <a href="#" class="html-btn dark">CSS Reference</a>
+      <a href="#" class="html-btn pink">Get Certified</a>
+    </div>
+    <div class="html-right">
+      <h3>CSS Example:</h3>
+      <div class="code-box">
+        <div class="code-box">
+          body {<br>
+          &nbsp;&nbsp;background-color: lightblue;<br>
+          }<br><br>
+          h1 {<br>
+          &nbsp;&nbsp;color: navy;<br>
+          &nbsp;&nbsp;margin-left: 20px;<br>
+          }
+        </div>
+
+      </div>
+      <button class="try-btn">Try it Yourself</button>
+
+    </div>
+  </div>
+  <!-- JAVA SCRIPT SECTION -->
+  <div class="JavaScript-section">
+    <div class="html-left">
+      <h1>JavaScript</h1>
+      <p>The language for programming web pages</p>
+      <a href="#" class="html-btn green">Learn JavaScript</a>
+      <a href="#" class="html-btn yellow">Video Tutorial</a>
+      <a href="#" class="html-btn dark">JavaScript Reference</a>
+      <a href="#" class="html-btn pink">Get Certified</a>
+    </div>
+    <div class="html-right">
+      <h3>JavaScript Example:</h3>
+      <div class="code-box">
+        <div class="code-box">
+          &lt;script&gt;<br>
+          &nbsp;&nbsp;document.getElementById("demo").innerHTML = "Hello JavaScript!";<br>
+          &lt;/script&gt;
+        </div>
+
+      </div>
+      <button class="try-btn">Try it Yourself</button>
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <script>
+  // Dark mode toggle
+  document.getElementById("dark-mode-toggle").addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+  });
+
+  // Mobile menu toggle
+  const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+  const mobileMenu = document.querySelector(".mobile-menu");
+
+  mobileMenuToggle.addEventListener("click", () => {
+    mobileMenu.classList.toggle("open");
+    mobileMenuToggle.classList.toggle("open");
+  });
+
+  // Changing text effect
+  const aashiTechs = ['HTML', 'CSS', 'JavaScript', 'Python', 'React', 'C++'];
+  let aashiIndex = 0;
+  const aashiTextEl = document.getElementById('changing-text'); // ✅ id fix
+
+  setInterval(() => {
+    aashiTextEl.style.opacity = 0;
+    setTimeout(() => {
+      aashiIndex = (aashiIndex + 1) % aashiTechs.length;
+      aashiTextEl.textContent = aashiTechs[aashiIndex];
+      aashiTextEl.style.opacity = 1;
+    }, 300);
+  }, 2000);
+</script>
+
+</body>
+
+</html>
