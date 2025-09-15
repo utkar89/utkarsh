@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Certificate Generator with Background</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #eee;
+    }
+    label, input, button {
+      display: block;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    input {
+      padding: 8px;
+      width: 300px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Certificate Generator (With Background)</h2>
+
+<label for="name">Enter Your Name:</label>
+<input type="text" id="name" placeholder="John Doe" />
+
+<label for="course">Course Name:</label>
+<input type="text" id="course" placeholder="JavaScript Basics" />
+
+<button id="generate">Generate Certificate</button>
+
+<script>
+  document.getElementById('generate').addEventListener('click', () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'pt',
+      format: 'a4'
+    });
+
+    const userName = document.getElementById('name').value || "John Doe";
+    const courseName = document.getElementById('course').value || "JavaScript Basics";
+
+    // Dummy background image - light decorative frame (Base64 PNG)
+    const bgImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAAJ1CAYAAAB9V6PEAAAABmJLR0QA/wD/AP+gvaeTAAABQElEQVR4nO3QMQEAAAgDINc/9K3hKCDACkiQsLBoBAwAAAAAAAMCXQDUAUxBTQVVAQAAAADAn0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAj0AoCUgCTQFRAFMQU0FVQEAAADAn0AoCUgCTQFRAFMQU0FVQEAAP//AeTxDgK8H2CFQAAAABJRU5ErkJggg==";
+
+    // Add background image covering full page
+    doc.addImage(bgImg, 'PNG', 0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height);
+
+    // Add text on top of background
+
+    doc.setFontSize(34);
+    doc.setTextColor("#003366");
+    doc.text("Certificate of Completion", doc.internal.pageSize.width / 2, 120, { align: "center" });
+
+    doc.setFontSize(22);
+    doc.setTextColor("#555555");
+    doc.text("This is to certify that", doc.internal.pageSize.width / 2, 170, { align: "center" });
+
+    doc.setFontSize(30);
+    doc.setTextColor("#0044cc");
+    doc.text(userName, doc.internal.pageSize.width / 2, 210, { align: "center" });
+
+    doc.setFontSize(20);
+    doc.setTextColor("#555555");
+    doc.text("has successfully completed the course", doc.internal.pageSize.width / 2, 250, { align: "center" });
+
+    doc.setFontSize(26);
+    doc.setTextColor("#007700");
+    doc.text(courseName, doc.internal.pageSize.width / 2, 290, { align: "center" });
+
+    const today = new Date().toLocaleDateString();
+    doc.setFontSize(16);
+    doc.setTextColor("#333333");
+    doc.text(`Date: ${today}`, doc.internal.pageSize.width - 150, doc.internal.pageSize.height - 60);
+
+    doc.setLineWidth(0.7);
+    doc.line(80, doc.internal.pageSize.height - 90, 280, doc.internal.pageSize.height - 90);
+    doc.text("Instructor Signature", 80, doc.internal.pageSize.height - 70);
+
+    // Download PDF
+    doc.save(`${userName}_certificate.pdf`);
+  });
+</script>
+
+</body>
+</html>
