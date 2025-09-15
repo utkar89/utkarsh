@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Quiz Exercise</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f7f8fc, #e0eafc);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .quiz-container {
+      background-color: #ffffff;
+      padding: 30px;
+      width: 90%;
+      max-width: 700px;
+      animation: fadeIn 1s ease-in-out;
+      position: relative;
+      box-shadow: 0 0 20px rgba(103, 58, 183, 0.4);
+      border-radius: 12px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    .question {
+      display: none;
+      margin-bottom: 20px;
+    }
+
+    .question.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .options button:hover {
+      background-color: #dcdcdc;
+    }
+
+    .options button.correct {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .options button.wrong {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .progress {
+      height: 100%;
+      background-color: #4CAF50;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .show-answer {
+      margin-top: 10px;
+      color: #007BFF;
+      cursor: pointer;
+    }
+
+    .answer-text {
+      display: none;
+      margin-top: 5px;
+      color: #333;
+      font-style: italic;
+    }
+
+    .completion-message {
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    .question-nav {
+      margin-bottom: 20px;
+    }
+
+    .question-nav button {
+      margin-right: 8px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #e0e0e0;
+      cursor: pointer;
+    }
+
+    .question-nav button.active-nav {
+      background-color: #673ab7;
+      color: white;
+    }
+
+    .nav-buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .nav-buttons button {
+      padding: 8px 16px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #673ab7;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .nav-buttons button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="quiz-container">
+    <h2>Exercise: HTML Quiz</h2>
+
+    <div class="question-nav" id="questionNav"></div>
+
+    <div class="question active" data-answer="0">
+      <p>What is the correct syntax for an HTML hyperlink?</p>
+      <div class="options">
+        <button onclick="checkAnswer(this, 0)">&lt;a href='/home.htm'&gt;Visit W3Schools.com!&lt;/a&gt;</button>
+        <button onclick="checkAnswer(this, 1)">&lt;link href='/home.htm'&gt;Visit W3Schools.com!&lt;/link&gt;</button>
+        <button onclick="checkAnswer(this, 2)">&lt;alink href='/home.htm'&gt;Visit W3Schools.com!&lt;/alink&gt;</button>
+      </div>
+      <div class="show-answer" onclick="toggleAnswer(this)">Show Answer</div>
+      <div class="answer-text">&lt;a href='...'&gt;...&lt;/a&gt; is correct for a hyperlink.</div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="1">
+      <p>Which tag is used for a paragraph in HTML?</p>
+      <div class="options">
+        <button onclick="checkAnswer(this, 0)">&lt;head&gt;</button>
+        <button onclick="checkAnswer(this, 1)">&lt;p&gt;</button>
+        <button onclick="checkAnswer(this, 2)">&lt;div&gt;</button>
+      </div>
+      <div class="show-answer" onclick="toggleAnswer(this)">Show Answer</div>
+      <div class="answer-text">The &lt;p&gt; tag is used for paragraphs.</div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="question" data-answer="2">
+      <p>Which tag is used to define the most important heading?</p>
+      <div class="options">
+        <button onclick="checkAnswer(this, 0)">&lt;h6&gt;</button>
+        <button onclick="checkAnswer(this, 1)">&lt;h2&gt;</button>
+        <button onclick="checkAnswer(this, 2)">&lt;h1&gt;</button>
+      </div>
+      <div class="show-answer" onclick="toggleAnswer(this)">Show Answer</div>
+      <div class="answer-text">&lt;h1&gt; is the most important heading.</div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="completion-message" style="display:none">
+      🎉 Congratulations! You've completed all questions correctly!
+    </div>
+
+    <div class="nav-buttons">
+      <button id="backBtn" onclick="goHome()">⬅ Back</button>
+      <button id="nextBtn" onclick="goNextPage()">Next ➡</button>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentQuestion = 0;
+    const questions = document.querySelectorAll('.question');
+    const nav = document.getElementById('questionNav');
+    const backBtn = document.getElementById('backBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let correctAnswers = new Array(questions.length).fill(false);
+
+    questions.forEach((q, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = `Q${i + 1}`;
+      btn.onclick = () => goToQuestion(i);
+      btn.disabled = true;
+      nav.appendChild(btn);
+    });
+
+    function goToQuestion(index) {
+      questions[currentQuestion].classList.remove('active');
+      currentQuestion = index;
+      questions[currentQuestion].classList.add('active');
+      updateNav();
+      updateProgress();
+    }
+
+    function checkAnswer(button, answerIndex) {
+      const parent = button.closest('.question');
+      const correctIndex = parseInt(parent.dataset.answer);
+      const options = parent.querySelectorAll('button');
+
+      options.forEach(btn => btn.disabled = true);
+
+      if (answerIndex === correctIndex) {
+        button.classList.add('correct');
+        parent.querySelector('.feedback').textContent = "Correct!";
+        correctAnswers[currentQuestion] = true;
+        if (nav.children[currentQuestion]) nav.children[currentQuestion].disabled = false;
+
+        setTimeout(() => {
+          questions[currentQuestion].classList.remove('active');
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            questions[currentQuestion].classList.add('active');
+            if (nav.children[currentQuestion]) nav.children[currentQuestion].disabled = false;
+          } else {
+            document.querySelector('.completion-message').style.display = 'block';
+            showFinalButtons();
+          }
+          updateProgress();
+          updateNav();
+        }, 800);
+      } else {
+        button.classList.add('wrong');
+        parent.querySelector('.feedback').textContent = "Incorrect. Try again!";
+        options.forEach(btn => btn.disabled = false);
+      }
+    }
+
+    function updateNav() {
+      [...nav.children].forEach((btn, i) => {
+        btn.classList.toggle('active-nav', i === currentQuestion);
+      });
+    }
+
+    function updateProgress() {
+      const progress = document.querySelector('.progress');
+      const correctCount = correctAnswers.filter(val => val).length;
+      const percent = (correctCount / questions.length) * 100;
+      progress.style.width = percent + '%';
+    }
+
+    function toggleAnswer(elem) {
+      const answer = elem.nextElementSibling;
+      answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function showFinalButtons() {
+      if (correctAnswers.every(val => val)) {
+        backBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'inline-block';
+      }
+    }
+
+    function goHome() {
+      window.location.href = "index.html"; // Update with your homepage file
+    }
+
+    function goNextPage() {
+      window.location.href = "page2.html"; // Update with your next page
+    }
+
+    // Initial settings
+    backBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+    goToQuestion(0);
+  </script>
+</body>
+
+</html>
