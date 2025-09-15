@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Tutorial - Sidebar Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #000;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .sidebar {
+      background-color: #f1f1f1;
+      width: 250px;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 20px 10px;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 10px;
+      margin-bottom: 5px;
+      background-color: #fff;
+      border-left: 5px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar ul li:hover {
+      background-color: #e0e0e0;
+      border-left: 5px solid rgb(126, 34, 206);
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .home-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: rgb(126, 34, 206);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .hamburger {
+      display: none;
+      background-color: rgb(126, 34, 206);
+      color: white;
+      border: none;
+      font-size: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .topbar {
+      display: none;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 70%;
+        max-width: 300px;
+        height: 100%;
+        transform: translateX(-100%);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        background-color: #f1f1f1;
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .overlay.active {
+        display: block;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background-color: rgb(126, 34, 206);
+        position: sticky;
+        top: 0;
+        z-index: 1003;
+      }
+
+      .home-button {
+        background-color: white;
+        color: rgb(126, 34, 206);
+      }
+
+      .hamburger {
+        display: block;
+        background-color: white;
+        color: rgb(126, 34, 206);
+      }
+    }
+
+    .tce-container {
+      font-family: Arial, sans-serif;
+      margin-top: 40px;
+    }
+
+    .tce-title {
+      color: #333;
+    }
+
+    .tce-description {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .tce-box {
+      background-color: #ffffff;
+      padding: 20px;
+      border-left: 6px solid #04AA6D;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .tce-code {
+      background: #f0f0f0;
+      padding: 10px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+    }
+
+    .tce-button {
+      background-color: #04AA6D;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .tce-button:hover {
+      background-color: #039f63;
+    }
+
+    /* Start Screen Styles */
+    .start-screen {
+      text-align: center;
+      padding: 50px 20px;
+      background-color: #fff;
+      box-shadow: 0 0 20px rgba(103, 58, 183, 0.1);
+      border-radius: 12px;
+      margin-top: 40px;
+    }
+
+    .start-screen h1 {
+      color: #673ab7;
+      font-size: 28px;
+    }
+
+    .start-screen p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .start-btn {
+      padding: 12px 24px;
+      background-color: #673ab7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease;
+    }
+
+    .start-btn:hover {
+      background-color: #5e35b1;
+    }
+
+    @media (max-width: 768px) {
+      .start-screen {
+        padding: 30px 15px;
+      }
+
+      .start-screen h1 {
+        font-size: 24px;
+      }
+
+      .start-btn {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a href="index.html" class="home-button">&larr; Home</a>
+    <button class="hamburger" onclick="toggleSidebar()">☰ Menu</button>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>HTML Tutorial</h2>
+    <ul>
+      <li>HTML Home</li>
+      <li>HTML Introduction</li>
+      <li>HTML Editors</li>
+      <li>HTML Basic</li>
+      <li>HTML Elements</li>
+      <li>HTML Attributes</li>
+      <li>HTML Headings</li>
+      <li>HTML Paragraphs</li>
+      <li>HTML Styles</li>
+      <li>HTML Formatting</li>
+      <li>HTML Quotations</li>
+      <li>HTML Comments</li>
+      <li>HTML Colors</li>
+      <li>HTML CSS</li>
+      <li>HTML Links</li>
+      <li>HTML Images</li>
+      <li>HTML Favicon</li>
+      <li>HTML Page Title</li>
+      <li>HTML Tables</li>
+      <li>HTML Lists</li>
+      <li>HTML Block & Inline</li>
+      <li>HTML Div</li>
+      <li>HTML Classes</li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <h1>HTML Tutorial</h1>
+    <div style="background-color: #e8f5e9; padding: 20px; border-radius: 8px;">
+      <h2>Learn HTML</h2>
+      <p>HTML is the standard markup language for Web pages. With HTML you can create your own Website.</p>
+      <p>HTML is easy to learn - You will enjoy it!</p>
+      <a href="#" style="background-color:rgb(126, 34, 206); padding: 10px 15px; color: white; border-radius: 5px; display: inline-block; margin-top: 10px; text-decoration: none;">Start learning HTML now &raquo;</a>
+    </div>
+
+    <!-- Try it Yourself Section -->
+    <div class="tce-container">
+      <h2 class="tce-title">Easy Learning with HTML "Try it Yourself"</h2>
+      <p class="tce-description">
+        With our "Try it Yourself" editor, you can edit the HTML code and view the result:
+      </p>
+
+      <div class="tce-box">
+        <pre class="tce-code">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Page Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;This is a Heading&lt;/h1&gt;
+  &lt;p&gt;This is a paragraph.&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+        <button class="tce-button" onclick="openTryIt()">Try it Yourself »</button>
+      </div>
+    </div>
+
+    <!-- 🚀 HTML Practice Start Screen -->
+    <div class="start-screen">
+      <h1>🚀 HTML Practice Station</h1>
+      <p>Click the button below to begin coding practice.</p>
+      <a href="practice.html"><button class="start-btn">Start</button></a>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function openTryIt() {
+      window.open("tryit.html", "_blank");
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+
+      sidebar.classList.toggle("active");
+      overlay.classList.toggle("active");
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+
+      sidebar.classList.remove("active");
+      overlay.classList.remove("active");
+    }
+  </script>
+</body>
+
+</html>
